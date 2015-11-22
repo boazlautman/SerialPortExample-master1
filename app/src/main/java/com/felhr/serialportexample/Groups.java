@@ -15,7 +15,8 @@ public class Groups {
     }
 
     public static short[] U1Protocols = {12,11 ,10 ,9, 8, 7, 6, 5, 4 };
-
+    public static String ESNNumber = "000000000000000";
+    public static String ParametesFlag = "";
     public java.util.Map<String, IGroup> GroupsList;
 
     public Groups(HDWType DeviceType, int Protocol) {
@@ -80,23 +81,22 @@ public class Groups {
         StringBuilder str = new StringBuilder("91");
         try
         {
-            /*
-            str.append(Conversions.StringToHexPadRight(ESNNumber, 40));
+
+            str.append(Conversions.StringToHexPadRight(ESNNumber, 40,""));
             str.append(ParameterFlags);
-            str.append(Conversions.StringToHexPadRight(Vehicle_ID, 20));
-            str.append(Conversions.StringToHexPadRight(Office_SMS_Number, 40));
-            str.append(Conversions.U1Odometer(Current_Odometer.toString(), 8, "20"));
+            str.append(Conversions.StringToHexPadRight(Vehicle_ID, 20,""));
+            str.append(Conversions.StringToHexPadRight(Office_SMS_Number, 40,""));
+            str.append(Conversions.U1Odometer(String.valueOf(Current_Odometer), 8, "20"));
             str.append("000000");//Reserved param 4,5,6
-            str.append(Conversions.StringToHexPadRight(Pin_code, 10));
-            str.append(Conversions.NumberToHex(driver_data_length.toString(), 2));
-            str.append(Conversions.NumberToHex(permission_code_length.toString(), 2));
-            str.append(Conversions.NumberToHex(Pulse_Per_Revolution.toString(), 2));
-            str.append(Conversions.NumberToHex(Engine_hours.toString(), 8));
-            str.append(Conversions.NumberToHex(Next_service_odometer.toString(), 8));
-            str.append(Conversions.NumberToHex(Next_service_engine_hours.toString(), 8));
-            str.append(Conversions.NumberToHex(Pulse_Per_KM_PPK.toString(), 4));
-            str.append(Conversions.StringToHexPadRight(Company_ID, 12));
-            */
+            str.append(Conversions.StringToHexPadRight( Pin_code, 10,""));
+            str.append(Conversions.NumberToHex(String.valueOf(driver_data_length) , 2));
+            str.append(Conversions.NumberToHex(String.valueOf(permission_code_length), 2));
+            str.append(Conversions.NumberToHex(String.valueOf(Pulse_Per_Revolution), 2));
+            str.append(Conversions.NumberToHex(String.valueOf(Engine_hours), 8));
+            str.append(Conversions.NumberToHex(String.valueOf(Next_service_odometer), 8));
+            str.append(Conversions.NumberToHex(String.valueOf(Next_service_engine_hours), 8));
+            str.append(Conversions.NumberToHex(String.valueOf(Pulse_Per_KM_PPK), 4));
+            str.append(Conversions.StringToHexPadRight(Company_ID, 12,""));
             if (Company_ID == null || Company_ID.length() != 6)
             {
               //  throw new "CompanyID must be 6 numbers");
@@ -115,15 +115,15 @@ public class Groups {
     {
         try
         {
-            /*
-            ESNNumber = Encoding.ASCII.GetString(buffer, 5, 20).Trim();
+
+            ESNNumber = new String(buffer, "UTF-8"); // Encoding.ASCII.GetString(buffer, 5, 20).Trim();
             ParametesFlag = "1111111111111111";
-            Vehicle_ID = Encoding.ASCII.GetString(buffer, 29, 10).Trim();
-            Office_SMS_Number = Encoding.ASCII.GetString(buffer, 39, 20).Trim();
+            Vehicle_ID = new String(buffer, 29, 10).trim();
+            Office_SMS_Number =new String(buffer, 39, 20).trim();
 
             byte[] odo2 = { buffer[61], buffer[60] };
-            double odo = (double)(buffer[59] * 10000 + BitConverter.ToUInt16(odo2, 0)) + (double)buffer[62] / 10.0;
-            Current_Odometer = float.Parse(odo.ToString());
+            double odo = (double)(buffer[59] * 10000 + BitConverter.toInt16(odo2, 0)) + (double)buffer[62] / 10.0;
+            Current_Odometer = (float)(odo);
 
             //GPS_accident_deceleration_threshold = short.Parse(buffer[61].ToString());
 
@@ -131,14 +131,14 @@ public class Groups {
 
             //GPS_acceleration_threshold = short.Parse(buffer[63].ToString());
 
-            Pin_code = Encoding.ASCII.GetString(buffer, 66, 5).Trim();
+            Pin_code = new String(buffer, 66, 5).trim();
 
-            driver_data_length = short.Parse(buffer[71].ToString());
+            driver_data_length =buffer[71];
 
-            permission_code_length = short.Parse(buffer[72].ToString());
+            permission_code_length = buffer[72];
 
-            Pulse_Per_Revolution = short.Parse(buffer[73].ToString());
-
+            Pulse_Per_Revolution = buffer[73];
+/*
             byte[] temp = new byte[4];
             Array.Copy(buffer, 74, temp, 0, 4);
             Array.Reverse(temp);
