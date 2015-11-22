@@ -1,0 +1,37 @@
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background = "#000000"
+    android:orientation="vertical"
+    tools:context="com.felhr.serialportexample.MainActivity" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1000"
+        android:layout_below="@+id/textViewTextField"
+        android:background="#FFFFFF"
+        android:gravity="bottom"
+        android:layout_marginTop="34dp" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#FFFFFF"
+        android:ems="50" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/buttonSend"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Send" />
+
+</LinearLayout >

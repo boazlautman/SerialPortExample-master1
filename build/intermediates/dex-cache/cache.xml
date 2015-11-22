@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\pre-dexed\debug\classes-4a11afef0d8032e1e159068a2f3fac0c976b5ad2.jar" />
+    </item>
+    <item
+        jar="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\pre-dexed\debug\classes-1b821476b3881f767d1a6997d82b328ddd92d8c4.jar" />
+    </item>
+    <item
+        jar="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\libs\usbserial.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="450a08132dff830581b2b82c380c5f32488159d3">
+        <dex dex="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\pre-dexed\debug\usbserial-8541296e9edda8f207095b9a5b607b88f46f3dae.jar" />
+    </item>
+    <item
+        jar="D:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-aa16b3cf885393ef74ba8407c65bcf20627dd05b.jar" />
+    </item>
+    <item
+        jar="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="D:\Android\AndroidStudioProjects\SerialPortExample-master1\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-4ecacfd8fd0abf4f2516c5ccb37519b084b96cac.jar" />
+    </item>
+
+</items>
