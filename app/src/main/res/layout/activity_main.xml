@@ -10,7 +10,7 @@
         android:id="@+id/textView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1000"
+        android:layout_weight="1002"
         android:layout_below="@+id/textViewTextField"
         android:background="#FFFFFF"
         android:gravity="bottom"
