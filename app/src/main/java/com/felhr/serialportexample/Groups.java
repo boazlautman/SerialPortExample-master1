@@ -1,5 +1,10 @@
 package com.felhr.serialportexample;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Created by boaz on 11/19/2015.
  */
@@ -31,12 +36,21 @@ public class Groups {
         }
     }
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+
+    public @interface GroupsAttributes {
+        public boolean Browsable();
+    }
     public abstract class SP1_Base implements IGroup
     {
         public String Vehicle_ID;
         public String Office_SMS_Number;
+        @GroupsAttributes(Browsable=false)
         public short GPS_accident_deceleration_threshold ;
+        @GroupsAttributes(Browsable=false)
         public short GPS_deceleration_threshold;
+        @GroupsAttributes(Browsable=false)
         public short GPS_acceleration_threshold;
         public String Pin_code;
         public short driver_data_length;
@@ -45,7 +59,9 @@ public class Groups {
         public long Next_service_engine_hours;
         public String Company_ID;
         public short Pulse_Per_Revolution;
+        @GroupsAttributes(Browsable=false)
         public String Firmware_Version_Number;
+        @GroupsAttributes(Browsable=false)
         public String Modem_firmware_version;
     }
 
@@ -54,12 +70,14 @@ public class Groups {
     {
         public float Current_Odometer;
         public short permission_code_length;
+        @GroupsAttributes(Browsable=false)
         public Integer Pulse_Per_KM_PPK;
 
     }
 
     public class SP1_P12 extends SP1_UU1_Base
     {
+        @GroupsAttributes(Browsable=false)
         public String ParameterFlags = "FFFFFFFF";
         public int Accelerometer_identifier;
         public int Hardware_version_number;

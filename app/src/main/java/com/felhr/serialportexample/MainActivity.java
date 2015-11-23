@@ -1,6 +1,8 @@
 package com.felhr.serialportexample;
 
+import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +22,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +104,69 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 	public void GenerateUI(String sp)
 	{
+			//_groups.p
+		setContentView(R.layout.spcontainer);
+
+		IGroup grp =  _groups.GroupsList.get(sp);
+		Field[] Fields = grp.getClass().getFields();
+		TableLayout tl = (TableLayout) findViewById(R.id.tblSP);
+		Object name = null;
+		for (Field field : Fields) {
+
+			Annotation[] annotations = field.getDeclaredAnnotations();
+			if(!field.isAnnotationPresent(Groups.GroupsAttributes.class)) {
+
+
+				TableRow tr = new TableRow(this);
+				tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+				tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+				TextView tv = new TextView(this);
+				tv.setText(field.getName());
+				EditText et = new EditText(this);
+				field.setAccessible(true);
+				if (field.isAccessible()) {
+					try {
+						name = field.get(grp);
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+
+				tr.addView(tv);
+
+				if (field.getType() == String.class) {
+					et.setText((String) name);
+					tr.addView(et);
+				} else if (field.getType() == int.class) {
+					int a = (int) name;
+					String result = String.valueOf(a);
+					et.setText(result);
+					tr.addView(et);
+				} else if (field.getType() == double.class) {
+					double a = (double) name;
+					String result = String.valueOf(a);
+					et.setText(result);
+					tr.addView(et);
+
+				} else if (field.getType() == float.class) {
+					float a = (float) name;
+					String result = String.valueOf(a);
+					et.setText(result);
+					tr.addView(et);
+				}
+			 else if (field.getType() == long.class) {
+					long a = (long) name;
+					String result = String.valueOf(a);
+					et.setText(result);
+					tr.addView(et);
+				}
+				else if (field.getType() == Enum.class) {
+
+				}
+			}
+
+		}
 
 	}
 
