@@ -24,10 +24,9 @@ public class Groups {
 
         switch (DeviceType) {
             case UU1:
-
                 switch (Protocol) {
                     case 12:
-
+                        GroupsList.put("SP1", new SP1_P12());
                 }
         }
     }

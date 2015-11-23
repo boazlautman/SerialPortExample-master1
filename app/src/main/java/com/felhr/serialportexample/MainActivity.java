@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 	private Button sendButton;
 	
 	private MyHandler mHandler;
+	private static Groups _groups;
+	private Spinner spr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -45,9 +48,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         editText = (EditText) findViewById(R.id.editText1);
         sendButton = (Button) findViewById(R.id.buttonSend);
         sendButton.setOnClickListener(this);
-		display.setMovementMethod(new 	android.text.method.ScrollingMovementMethod());
+		display.setMovementMethod(new android.text.method.ScrollingMovementMethod());
+		_groups = new Groups(Groups.HDWType.UU1, 12);
+		spr = (Spinner)findViewById(R.id.protocol_spinner);
+		spr.setSelection(1);
     }
-    
+
     @Override
 	public void onResume()
 	{
@@ -55,7 +61,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     	setFilters();  // Start listening notifications from UsbService
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
 	}
-    
+
     @Override
     public void onPause()
     {
@@ -84,8 +90,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         {
             return true;
         }
+		else if(id == R.id.action_sp1) {
+			GenerateUI("SP1");
+			//Toast.makeText(this, "Setting", Toast.LENGTH_LONG).show();
+			return true;
+		}
         return super.onOptionsItemSelected(item);
     }
+
+	public void GenerateUI(String sp)
+	{
+
+	}
 
 
 	@Override
@@ -197,4 +213,5 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 			usbService = null;
 		}
 	};
+
 }
