@@ -132,7 +132,6 @@ public class Groups {
     {
         try
         {
-
             ESNNumber = new String(buffer, "UTF-8"); // Encoding.ASCII.GetString(buffer, 5, 20).Trim();
             ParametesFlag = "1111111111111111";
             Vehicle_ID = new String(buffer, 29, 10).trim();

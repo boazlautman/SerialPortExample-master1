@@ -3,6 +3,12 @@ package com.felhr.serialportexample;
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +22,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,23 +40,23 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener
 {
 	private UsbService usbService;
-	
+
 	private TextView display;
 	private EditText editText;
 	private Button sendButton;
-	
 	private MyHandler mHandler;
 	private static Groups _groups;
 	private Spinner spr;
+    private Map<String,String> lstFields;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) 
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         mHandler = new MyHandler(this);
-        
+
         display = (TextView) findViewById(R.id.textView1);
         editText = (EditText) findViewById(R.id.editText1);
         sendButton = (Button) findViewById(R.id.buttonSend);
@@ -76,7 +85,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) 
+    public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -84,14 +93,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) 
+    public boolean onOptionsItemSelected(MenuItem item)
     {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) 
+        if (id == R.id.action_home)
         {
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+			finish();
             return true;
         }
 		else if(id == R.id.action_sp1) {
@@ -105,15 +117,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 	public void GenerateUI(String sp)
 	{
 			//_groups.p
+        lstFields = new HashMap<String, String>() {
+
+		};
+
 		setContentView(R.layout.spcontainer);
 
 		IGroup grp =  _groups.GroupsList.get(sp);
 		Field[] Fields = grp.getClass().getFields();
 		TableLayout tl = (TableLayout) findViewById(R.id.tblSP);
-		Object name = null;
+		Object Val = null;
 		for (Field field : Fields) {
-
-			Annotation[] annotations = field.getDeclaredAnnotations();
 			if(!field.isAnnotationPresent(Groups.GroupsAttributes.class)) {
 
 
@@ -124,46 +138,53 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 				TextView tv = new TextView(this);
 				tv.setText(field.getName());
 				EditText et = new EditText(this);
+                et.setOnFocusChangeListener(myEditTextFocus);
+				et.setTag(field.getName());
 				field.setAccessible(true);
 				if (field.isAccessible()) {
 					try {
-						name = field.get(grp);
+						Val = field.get(grp);
+						if(Val != null) {
+							lstFields.put(field.getName(), Val.toString());
+						}
+						else{
+							lstFields.put(field.getName(), "");
+						}
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
 					}
+
 				}
 
 				tr.addView(tv);
-
-				if (field.getType() == String.class) {
-					et.setText((String) name);
-					tr.addView(et);
+                String result = "";
+                if (field.getType() == String.class) {
 				} else if (field.getType() == int.class) {
-					int a = (int) name;
-					String result = String.valueOf(a);
-					et.setText(result);
-					tr.addView(et);
+					int a = (int) Val;
+					 result = String.valueOf(a);
 				} else if (field.getType() == double.class) {
-					double a = (double) name;
-					String result = String.valueOf(a);
-					et.setText(result);
-					tr.addView(et);
+					double a = (double) Val;
+					 result = String.valueOf(a);
 
 				} else if (field.getType() == float.class) {
-					float a = (float) name;
-					String result = String.valueOf(a);
-					et.setText(result);
-					tr.addView(et);
+					float a = (float) Val;
+					 result = String.valueOf(a);
 				}
-			 else if (field.getType() == long.class) {
-					long a = (long) name;
-					String result = String.valueOf(a);
-					et.setText(result);
-					tr.addView(et);
+			 	else if (field.getType() == long.class) {
+					long a = (long) Val;
+					result = String.valueOf(a);
 				}
+                else if (field.getType() == short.class) {
+                    short a = (short) Val;
+                     result = String.valueOf(a);
+
+                }
 				else if (field.getType() == Enum.class) {
 
 				}
+
+                et.setText(result);
+                tr.addView(et);
 			}
 
 		}
@@ -171,8 +192,57 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 	}
 
 
+    private View.OnFocusChangeListener myEditTextFocus =  new View.OnFocusChangeListener() {
+        public void onFocusChange(View view, boolean gainFocus) {
+            //onFocus
+            if (!gainFocus) {
+
+				Log.d("aaa111a", "aaa");
+
+               IGroup grp =  _groups.GroupsList.get("SP1");
+
+				EditText editText= (EditText) view;
+				Log.d("aaaa", editText.getTag().toString());
+				Log.d("bbbb", editText.getText().toString());
+				/*
+				lstFields.put(editText.getTag().toString(), editText.getText().toString());
+				BuildMessage(grp);*/
+            }
+        };
+    };
+
+    private void BuildMessage(IGroup grp)
+    {
+		Field[] Fields = grp.getClass().getFields();
+		Log.d("aa","kaka");
+		for (String key : lstFields.keySet()) {
+			String val =	lstFields.get(key);
+			for (Field field : Fields) {
+
+				if(field.getName() == key)
+				{
+					try {
+						field.set(key,val);
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			//Log.d("bbbbbbbb", grp.toString());
+			// do what you wish with key and value here
+		}
+		/*for(String tmp:lstFields)
+		{
+			for (Field field : Fields) {
+				if(field.getName() == tmp){
+					//field.set(grp, tmp)
+				}
+			}
+		}*/
+    }
+
 	@Override
-	public void onClick(View v) 
+	public void onClick(View v)
 	{
 		if(!editText.getText().toString().equals(""))
 		{
@@ -181,7 +251,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 				usbService.write(data.getBytes());
 		}
 	}
-	
+
 	private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras)
 	{
 		if(UsbService.SERVICE_CONNECTED == false)
@@ -201,7 +271,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 		Intent bindingIntent = new Intent(this, service);
 		bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 	}
-	
+
 	private void setFilters()
 	{
 		IntentFilter filter = new IntentFilter();
@@ -212,15 +282,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 		filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
 		registerReceiver(mUsbReceiver, filter);
 	}
-	
+
 	/*
 	 * This handler will be passed to UsbService. Dara received from serial port is displayed through this handler
 	 */
-	private static class MyHandler extends Handler 
+	private static class MyHandler extends Handler
 	{
 		private final WeakReference<MainActivity> mActivity;
 
-		public MyHandler(MainActivity activity) 
+		public MyHandler(MainActivity activity)
 		{
 			mActivity = new WeakReference<MainActivity>(activity);
 		}
@@ -237,14 +307,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 			}
 		}
 	}
-	
+
 	/*
 	 * Notifications from UsbService will be received here.
 	 */
-	private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() 
+	private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver()
 	{
 		@Override
-		public void onReceive(Context arg0, Intent arg1) 
+		public void onReceive(Context arg0, Intent arg1)
 		{
 			if(arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_GRANTED)) // USB PERMISSION GRANTED
 			{
@@ -264,18 +334,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 			}
 		}
 	};
-	
+
 	private final ServiceConnection usbConnection = new ServiceConnection()
 	{
 		@Override
-		public void onServiceConnected(ComponentName arg0, IBinder arg1) 
+		public void onServiceConnected(ComponentName arg0, IBinder arg1)
 		{
 			usbService = ((UsbService.UsbBinder) arg1).getService();
 			usbService.setHandler(mHandler);
 		}
 
 		@Override
-		public void onServiceDisconnected(ComponentName arg0) 
+		public void onServiceDisconnected(ComponentName arg0)
 		{
 			usbService = null;
 		}
