@@ -197,40 +197,98 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             //onFocus
             if (!gainFocus) {
 
-				Log.d("aaa111a", "aaa");
+				//Log.d("aaa111a", "aaa");
 
                IGroup grp =  _groups.GroupsList.get("SP1");
 
 				EditText editText= (EditText) view;
-				Log.d("aaaa", editText.getTag().toString());
-				Log.d("bbbb", editText.getText().toString());
-				/*
+				//Log.d("aaaa", editText.getTag().toString());
+				//Log.d("bbbb", editText.getText().toString());
+
 				lstFields.put(editText.getTag().toString(), editText.getText().toString());
-				BuildMessage(grp);*/
+				BuildMessage(grp);
             }
         };
     };
 
     private void BuildMessage(IGroup grp)
     {
+	//	Log.d("14789","rttrt");
 		Field[] Fields = grp.getClass().getFields();
-		Log.d("aa","kaka");
+		//Log.d("aa","kaka");
 		for (String key : lstFields.keySet()) {
 			String val =	lstFields.get(key);
 			for (Field field : Fields) {
 
 				if(field.getName() == key)
 				{
-					try {
-						field.set(key,val);
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+					if (field.getType() == String.class) {
+						try {
+							field.set(grp, val);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
+					} else if (field.getType() == int.class) {
+						int a = Integer.parseInt(val) ;
+						try {
+							field.set(grp, a);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
+					} else if (field.getType() == double.class) {
+						double a = Double.parseDouble(val) ;
+						try {
+							field.set(grp, a);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
+
+					} else if (field.getType() == float.class) {
+						float a = Float.parseFloat(val);
+						try {
+							field.set(grp, a);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
 					}
+					else if (field.getType() == long.class) {
+						long a = Long.parseLong(val);
+						try {
+							field.set(grp, a);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
+					}
+					else if (field.getType() == short.class) {
+						short a = Short.parseShort(val);
+						try {
+							field.set(grp, a);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						}
+
+					}
+					else if (field.getType() == Enum.class) {
+
+					}
+
+
+					//Log.d(field.getName(),val);
+					/*try {
+
+						field.set(grp,val);
+					} catch (IllegalAccessException e) {
+						Log.d("123456",e.getMessage());
+						e.printStackTrace();
+					}*/
 				}
 			}
 			//Log.d("bbbbbbbb", grp.toString());
 			// do what you wish with key and value here
 		}
+
+		EditText et = (EditText) findViewById(R.id.editText111);
+		et.setText(grp.toString());
 		/*for(String tmp:lstFields)
 		{
 			for (Field field : Fields) {

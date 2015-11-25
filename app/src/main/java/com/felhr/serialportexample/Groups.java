@@ -1,5 +1,7 @@
 package com.felhr.serialportexample;
 
+import android.util.Log;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -71,7 +73,7 @@ public class Groups {
         public float Current_Odometer;
         public short permission_code_length;
         @GroupsAttributes(Browsable=false)
-        public Integer Pulse_Per_KM_PPK;
+        public int Pulse_Per_KM_PPK;
 
     }
 
@@ -92,8 +94,8 @@ public class Groups {
             permission_code_length = 10;
             Pin_code = "11111";
         }
-
-    public  String ToString()
+    @Override
+    public  String toString()
     {
         StringBuilder str = new StringBuilder("91");
         try
@@ -101,19 +103,20 @@ public class Groups {
 
             str.append(Conversions.StringToHexPadRight(ESNNumber, 40,""));
             str.append(ParameterFlags);
-            str.append(Conversions.StringToHexPadRight(Vehicle_ID, 20,""));
-            str.append(Conversions.StringToHexPadRight(Office_SMS_Number, 40,""));
+            str.append(Conversions.StringToHexPadRight(Vehicle_ID, 20, ""));
+            str.append(Conversions.StringToHexPadRight(Office_SMS_Number, 40, ""));
             str.append(Conversions.U1Odometer(String.valueOf(Current_Odometer), 8, "20"));
             str.append("000000");//Reserved param 4,5,6
-            str.append(Conversions.StringToHexPadRight( Pin_code, 10,""));
-            str.append(Conversions.NumberToHex(String.valueOf(driver_data_length) , 2));
+            str.append(Conversions.StringToHexPadRight(Pin_code, 10, ""));
+            str.append(Conversions.NumberToHex(String.valueOf(driver_data_length), 2));
             str.append(Conversions.NumberToHex(String.valueOf(permission_code_length), 2));
             str.append(Conversions.NumberToHex(String.valueOf(Pulse_Per_Revolution), 2));
             str.append(Conversions.NumberToHex(String.valueOf(Engine_hours), 8));
             str.append(Conversions.NumberToHex(String.valueOf(Next_service_odometer), 8));
             str.append(Conversions.NumberToHex(String.valueOf(Next_service_engine_hours), 8));
+            Log.d("Pulse_Per_KM_PPK", "before" + Pulse_Per_KM_PPK);
             str.append(Conversions.NumberToHex(String.valueOf(Pulse_Per_KM_PPK), 4));
-            str.append(Conversions.StringToHexPadRight(Company_ID, 12,""));
+            str.append(Conversions.StringToHexPadRight(Company_ID, 12, ""));
             if (Company_ID == null || Company_ID.length() != 6)
             {
               //  throw new "CompanyID must be 6 numbers");
@@ -122,8 +125,9 @@ public class Groups {
         }
         catch (Exception ex)
         {
-            return null;
+            return ex.getMessage();
         }
+        Log.d("aaaa", str.toString());
         return str.toString();
     }
 
