@@ -21,7 +21,14 @@ public class Groups {
         SML4RF
     }
 
+    public enum MediaType
+    {
+        RS232,
+        SMS
+    }
+    public static int Protocol;
     public static short[] U1Protocols = {12,11 ,10 ,9, 8, 7, 6, 5, 4 };
+    public static String[] HardwareCodes = new String[] { "8191", "8494", "90A0", "8595" };
     public static String ESNNumber = "000000000000000";
     public static String ParametesFlag = "";
     public java.util.Map<String, IGroup> GroupsList;
@@ -114,21 +121,20 @@ public class Groups {
             str.append(Conversions.NumberToHex(String.valueOf(Engine_hours), 8));
             str.append(Conversions.NumberToHex(String.valueOf(Next_service_odometer), 8));
             str.append(Conversions.NumberToHex(String.valueOf(Next_service_engine_hours), 8));
-            Log.d("Pulse_Per_KM_PPK", "before" + Pulse_Per_KM_PPK);
             str.append(Conversions.NumberToHex(String.valueOf(Pulse_Per_KM_PPK), 4));
             str.append(Conversions.StringToHexPadRight(Company_ID, 12, ""));
-            if (Company_ID == null || Company_ID.length() != 6)
+/*            if (Company_ID == null || Company_ID.length() != 6)
             {
               //  throw new "CompanyID must be 6 numbers");
-            }
-          //  str.Append("000000000000");//6 bytes reserved to fill 120 bytes
+            }*/
+            str.append("000000000000");//6 bytes reserved to fill 120 bytes
         }
         catch (Exception ex)
         {
             return ex.getMessage();
         }
-        Log.d("aaaa", str.toString());
-        return str.toString();
+       // Log.d("aaaa", str.toString().toUpperCase());
+        return str.toString().toUpperCase();
     }
 
 
