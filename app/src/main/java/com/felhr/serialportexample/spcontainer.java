@@ -1,7 +1,10 @@
 package com.felhr.serialportexample;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TableLayout;
@@ -12,7 +15,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class spcontainer extends Activity {
+public class spcontainer extends BaseActivity {
     private Map<String,String> lstFields;
     private static Groups _groups;
 
@@ -21,6 +24,7 @@ public class spcontainer extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spcontainer);
         _groups = new Groups(Groups.HDWType.UU1, 12);
+        GenerateUI("SP1");
     }
 
     public void GenerateUI(String sp)
@@ -181,30 +185,14 @@ public class spcontainer extends Activity {
 
                     }
 
-
-                    //Log.d(field.getName(),val);
-					/*try {
-
-						field.set(grp,val);
-					} catch (IllegalAccessException e) {
-						Log.d("123456",e.getMessage());
-						e.printStackTrace();
-					}*/
                 }
             }
-            //Log.d("bbbbbbbb", grp.toString());
-            // do what you wish with key and value here
+
         }
 
         EditText et = (EditText) findViewById(R.id.editText111);
         et.setText(grp.toString());
-		/*for(String tmp:lstFields)
-		{
-			for (Field field : Fields) {
-				if(field.getName() == tmp){
-					//field.set(grp, tmp)
-				}
-			}
-		}*/
+
     }
+
 }
